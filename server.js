@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 // const bodyParser = require('body-parser'); included in express.json
 
+const items = require("./routes/api/items");
+
 //creating express server
 const app = express();
 
@@ -25,7 +27,7 @@ mongoose
     console.log("mongodb is connected");
   })
   .catch((error) => {
-    console.log("mondb not connected");
+    console.log("mongodb not connected");
     console.log(error);
   });
 
@@ -39,6 +41,9 @@ mongoose
 // connection.once("open", () => {
 //   console.log("MongoDB database connection established successfully");
 // });
+
+//use routes (app.use(path, variable it should refer to))
+app.use("/api/items", items);
 
 const port = process.env.PORT || 5000;
 
