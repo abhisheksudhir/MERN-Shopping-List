@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const config = require('config');
 // const bodyParser = require('body-parser'); included in express.json
-
-const items = require("./routes/api/items");
 
 //creating express server
 const app = express();
@@ -15,7 +14,7 @@ app.use(express.json()); //to parse json
 
 //DB Config
 //uri is supposed to be got from mongo atlas
-const db = require("./config/keys").mongoURI;
+const db = config.get('mongoURI');
 
 //Connect to Mongo
 mongoose
@@ -43,8 +42,10 @@ mongoose
 //   console.log("MongoDB database connection established successfully");
 // });
 
-//use routes (app.use(path, variable it should refer to))
-app.use("/api/items", items);
+//use routes
+app.use("/api/items", require("./routes/api/items"));
+app.use("/api/users", require("./routes/api/users"));
+app.use('/api/auth', require('./routes/api/auth'));
 
 //Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
